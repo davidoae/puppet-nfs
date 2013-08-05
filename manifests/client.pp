@@ -1,9 +1,16 @@
 class nfs::client {
   case $operatingsystem {
-    Ubuntu:         { include nfs::client::ubuntu}
-    Debian:         { include nfs::client::debian}
-    RedHat,CentOS:  { include nfs::client::redhat}
-    default:        { notice "Unsupported operatingsystem ${operatingsystem}" }
+    Ubuntu:         { $nfsclient = 'ubuntu' }
+    Debian:         { $nfsclient = 'debian' }
+    RedHat,CentOS:  { $nfsclient = 'redhat' }
+    default: {
+      $nfsclient = false
+      notice "Unsupported operatingsystem ${operatingsystem}"
+    }
+  }
+
+  if ($nfsclient) {
+    include "nfs::client::${nfsclient}"
+    Class["nfs::client::${nfsclient}"] -> Mount <| |>
   }
 }
-
