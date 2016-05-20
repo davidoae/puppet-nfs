@@ -1,6 +1,6 @@
 class nfs::client::ubuntu inherits nfs::base {
 
-  package { ["nfs-common", "portmap"]:
+  package { ["nfs-common", "rpcbind"]:
     ensure => present,
   }
 
@@ -8,7 +8,8 @@ class nfs::client::ubuntu inherits nfs::base {
     ensure    => running,
     enable    => true,
     hasstatus => false,
-    require   => Package["portmap"],
+    status    => "service postmap status | grep -q 'start/running'",
+    require   => Package["rpcbind"],
   }
 
 }
