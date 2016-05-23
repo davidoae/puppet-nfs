@@ -8,7 +8,7 @@ class nfs::client::ubuntu inherits nfs::base {
     ensure    => running,
     enable    => true,
     hasstatus => false,
-    status    => "service postmap status | grep -q 'start/running'",
+    status    => "service portmap status | grep -q 'start/running'",
     require   => Package["rpcbind"],
   }
 
